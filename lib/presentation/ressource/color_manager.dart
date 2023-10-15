@@ -3,6 +3,8 @@ import 'dart:ui';
 class ColorManager {
   static Color purple700 = HexColor.fromHex("#8F6FFF");
   static Color white100 = HexColor.fromHex("#F6F2FF");
+  static Color black = HexColor.fromHex("#000000");
+  static Color white = HexColor.fromHex("#FFFFFF");
 }
 
 extension HexColor on Color {
@@ -10,7 +12,7 @@ extension HexColor on Color {
     hexColorString = hexColorString.replaceAll("#", "");
 
     if(hexColorString.length == 6) {
-      // 8 char with opacity 100%
+      // 8 characters with opacity 100% ----------------------------------------
       hexColorString = "FF$hexColorString";
     }
 
