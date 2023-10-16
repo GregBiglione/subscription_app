@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:subscription_app/presentation/ressource/color_manager.dart';
 import 'package:subscription_app/presentation/ressource/size_manager.dart';
@@ -27,7 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: () async {},
+            onPressed: () {
+              logout();
+            },
             icon: Icon(
               Icons.exit_to_app,
               color: ColorManager.black,
@@ -301,4 +304,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+
+  //----------------------------------------------------------------------------
+  // Logout
+  //----------------------------------------------------------------------------
+
+  logout() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
