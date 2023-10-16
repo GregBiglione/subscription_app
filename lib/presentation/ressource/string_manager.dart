@@ -10,4 +10,8 @@ class StringManager {
   static const String proPrice = "\$ 3599.00";
   static const String proFirstCondition = "Unlimited For 1 Year";
   static const String proRenewal = "1 Year Auto Renewal Subscription Plan";
+  static const String signInTitle = "Sign In";
+  static const String email = "Email";
+  static const String password = "Password";
+  static const String registerButton = "Register";
 }
