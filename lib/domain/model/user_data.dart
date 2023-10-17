@@ -1,6 +1,6 @@
 class UserData {
   String username;
-  String stripId;
+  String stripeId;
 
-  UserData({required this.username, required this.stripId});
+  UserData({required this.username, required this.stripeId});
 }

@@ -1,12 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:subscription_app/domain/model/stripe_data.dart';
+import 'package:subscription_app/domain/model/user_authentication.dart';
 import 'package:subscription_app/presentation/ressource/color_manager.dart';
 import 'package:subscription_app/presentation/ressource/size_manager.dart';
 import 'package:subscription_app/presentation/ressource/string_manager.dart';
 import 'package:subscription_app/presentation/ressource/style_manager.dart';
 
+import '../../app/function.dart';
+import '../../data/service.dart';
+import '../../domain/model/user_data.dart';
+
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String uid;
+
+  const HomeScreen({super.key, required this.uid});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -15,49 +23,76 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorManager.white100,
-      appBar: AppBar(
-        backgroundColor: ColorManager.white100,
-        title: Text(
-          StringManager.helloMessage,
-          style: getMediumStyle18(
-            color: ColorManager.black,
-          ),
-        ),
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              logout();
-            },
-            icon: Icon(
-              Icons.exit_to_app,
-              color: ColorManager.black,
-            ),
-          ),
-        ],
-      ),
-      body: Container(
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: SizeManager.s30,
-              ),
-              starterPlan(),
-              const SizedBox(
-                height: SizeManager.s10,
-              ),
-              proPlan(),
-              const SizedBox(
-                height: SizeManager.s40,
-              ),
-            ],
-          ),
-        ),
-      ),
+
+    return StreamBuilder<UserData>(
+      stream: UserAuthentication(uid: widget.uid).userData,
+      builder: (context, snapshot) {
+        if(snapshot.hasData) {
+          UserData userData = snapshot.data!;
+
+          return FutureBuilder<StripeData>(
+            future: getStripeData(),
+            builder: (context, snapshot) {
+              if(snapshot.hasData) {
+                StripeData stripeData = snapshot.data!;
+
+                return Scaffold(
+                  backgroundColor: ColorManager.white100,
+                  appBar: AppBar(
+                    backgroundColor: ColorManager.white100,
+                    title: Text(
+                      StringManager.helloMessage + userData.username,
+                      style: getMediumStyle18(
+                        color: ColorManager.black,
+                      ),
+                    ),
+                    elevation: 0,
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          logout();
+                        },
+                        icon: Icon(
+                          Icons.exit_to_app,
+                          color: ColorManager.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                  body: Container(
+                    alignment: Alignment.center,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: SizeManager.s30,
+                          ),
+                          starterPlan(),
+                          const SizedBox(
+                            height: SizeManager.s10,
+                          ),
+                          proPlan(),
+                          const SizedBox(
+                            height: SizeManager.s40,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return loading(StringManager.loadingStripeData);
+              } else {
+                return Container(color: Colors.lightBlue,);//const SizedBox();
+              }
+            }
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return loading(StringManager.loadingUserData);
+        } else {
+          return const SizedBox();
+        }
+      }
     );
   }
 

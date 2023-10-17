@@ -1,5 +1,5 @@
 class StringManager {
-  static const String helloMessage = "Hi, Dark Vador";
+  static const String helloMessage = "Hi, ";
   static const String starterTitle = "Starter Plan";
   static const String starterPrice = "\$ 1999.00";
   static const String starterFirstCondition = "Unlimited For 1 Month";
@@ -15,4 +15,6 @@ class StringManager {
   static const String email = "Email";
   static const String password = "Password";
   static const String registerButton = "Register";
+  static const String loadingUserData = "Loading user data...";
+  static const String loadingStripeData = "Loading stripe data...";
 }

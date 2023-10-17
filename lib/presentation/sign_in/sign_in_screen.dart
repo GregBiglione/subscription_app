@@ -35,7 +35,7 @@ class _SignInScreenState extends State<SignInScreen> {
       builder: (context, snapshot) {
 
         return snapshot.data != null
-            ? HomeScreen()
+            ? HomeScreen(uid: snapshot.data!.uid,)
             : Scaffold(
           appBar: AppBar(
             title: Text(
@@ -128,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
         // Save user data in firestore -----------------------------------------
 
-        await firestore.collection("users").doc(user!.uid).set({
+        await firestore.collection("users").doc(user.uid).set({
           "name": _nameController.text.trim(),
           "email": _emailController.text.trim(),
         });
