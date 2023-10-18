@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:subscription_app/domain/model/stripe_data.dart';
@@ -7,9 +8,11 @@ import 'package:subscription_app/presentation/ressource/size_manager.dart';
 import 'package:subscription_app/presentation/ressource/string_manager.dart';
 import 'package:subscription_app/presentation/ressource/style_manager.dart';
 
+import '../../app/constant/constant.dart';
 import '../../app/function.dart';
 import '../../data/service.dart';
 import '../../domain/model/user_data.dart';
+import '../checkout/checkout_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String uid;
@@ -22,11 +25,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late StripeData stripeData;
+  bool isLoadingPayment = false;
+  String? error = "";
 
   @override
   Widget build(BuildContext context) {
 
-    return StreamBuilder<UserData>(
+    return isLoadingPayment
+        ? loading(processPayment)
+        : StreamBuilder<UserData>(
       stream: UserAuthentication(uid: widget.uid).userData,
       builder: (context, snapshot) {
         if(snapshot.hasData) {
@@ -198,8 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundColor: ColorManager.white,
                 ),
                 onPressed: () async {
-                  buyStarterPlan(widget.uid, stripeData, context);
-                  print("Starter doc added\nuid: ${widget.uid}\nStarter plan id: ${stripeData.subStarterPriceId}");
+                  buyStarterPlan();
                 },
                 child: Text(
                   StringManager.buttonText,
@@ -321,7 +327,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorManager.purple700,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      buyProPlan();
+                    },
                     child: Text(
                       StringManager.buttonText,
                       style: getBoldStyle18(
@@ -351,5 +359,121 @@ class _HomeScreenState extends State<HomeScreen> {
 
   logout() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  //----------------------------------------------------------------------------
+  // Buy pro plan --------------------------------------------------------------
+  //----------------------------------------------------------------------------
+
+  buyStarterPlan() async {
+    setState(() {
+      isLoadingPayment = true;
+    });
+
+    DocumentReference documentReference = await firestore.collection("users")
+        .doc(widget.uid)
+        .collection("checkout_sessions")
+        .add({
+      "price": stripeData.subStarterPriceId,
+      "success_url": successUrl,
+      "cancel_url": cancelUrl,
+    });
+
+    documentReference.snapshots().listen((docSnapshot) async {
+      if(docSnapshot.exists) {
+        try {
+          error = docSnapshot.get("error");
+        } catch (e) {
+          error = null;
+        }
+
+        if(error != null) {
+          logger.e(error);
+        }
+        else {
+          String url = docSnapshot.get("url");
+
+          var response = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CheckoutScreen(
+                url: url,
+              ),
+            ),
+          );
+
+          if(response == success) {
+            // Payment successful ------------------------------------------------
+            setState(() {
+              isLoadingPayment = false;
+            });
+          }
+          else {
+            // Payment failed ----------------------------------------------------
+            setState(() {
+              isLoadingPayment = false;
+            });
+          }
+        }
+      }
+    },);
+  }
+
+  //----------------------------------------------------------------------------
+  // Buy starter plan ----------------------------------------------------------
+  //----------------------------------------------------------------------------
+
+  buyProPlan() async {
+    setState(() {
+      isLoadingPayment = true;
+    });
+
+    DocumentReference documentReference = await firestore.collection("users")
+        .doc(widget.uid)
+        .collection("checkout_sessions")
+        .add({
+      "price": stripeData.subProPriceId,
+      "success_url": successUrl,
+      "cancel_url": cancelUrl,
+    });
+
+    documentReference.snapshots().listen((docSnapshot) async {
+      if(docSnapshot.exists) {
+        try {
+          error = docSnapshot.get("error");
+        } catch (e) {
+          error = null;
+        }
+
+        if(error != null) {
+          logger.e(error);
+        }
+        else {
+          String url = docSnapshot.get("url");
+
+          var response = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CheckoutScreen(
+                url: url,
+              ),
+            ),
+          );
+
+          if(response == success) {
+            // Payment successful ------------------------------------------------
+            setState(() {
+              isLoadingPayment = false;
+            });
+          }
+          else {
+            // Payment failed ----------------------------------------------------
+            setState(() {
+              isLoadingPayment = false;
+            });
+          }
+        }
+      }
+    },);
   }
 }
