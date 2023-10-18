@@ -17,4 +17,5 @@ class StringManager {
   static const String registerButton = "Register";
   static const String loadingUserData = "Loading user data...";
   static const String loadingStripeData = "Loading stripe data...";
+  static const String noRouteFound = "No Route found";
 }

@@ -1,6 +1,6 @@
 import 'package:subscription_app/domain/model/user_data.dart';
 
-import '../../app/constant.dart';
+import '../../app/constant/constant.dart';
 
 class UserAuthentication {
   final String uid;

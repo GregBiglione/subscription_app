@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:subscription_app/app/constant.dart';
+import 'package:subscription_app/app/constant/constant.dart';
 import 'package:subscription_app/presentation/home/home_screen.dart';
 import 'package:subscription_app/presentation/ressource/size_manager.dart';
 import 'package:subscription_app/presentation/ressource/string_manager.dart';

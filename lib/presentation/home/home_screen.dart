@@ -21,6 +21,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late StripeData stripeData;
+
   @override
   Widget build(BuildContext context) {
 
@@ -34,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             future: getStripeData(),
             builder: (context, snapshot) {
               if(snapshot.hasData) {
-                StripeData stripeData = snapshot.data!;
+                stripeData = snapshot.data!;
 
                 return Scaffold(
                   backgroundColor: ColorManager.white100,
@@ -195,7 +197,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorManager.white,
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  buyStarterPlan(widget.uid, stripeData, context);
+                  print("Starter doc added\nuid: ${widget.uid}\nStarter plan id: ${stripeData.subStarterPriceId}");
+                },
                 child: Text(
                   StringManager.buttonText,
                   style: getBoldStyle18(

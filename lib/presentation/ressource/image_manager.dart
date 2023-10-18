@@ -1,4 +1,4 @@
-import '../../app/constant.dart';
+import '../../app/constant/constant.dart';
 
 class ImageManager {
   static const String proPlan = "$imagePath/pro_plan.png";
