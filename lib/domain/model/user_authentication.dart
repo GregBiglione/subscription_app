@@ -43,9 +43,9 @@ class UserAuthentication {
 
   SubscriptionStatus checkUserHaveActiveSubscription(QuerySnapshot querySnapshot) {
     for(var documentSnapshot in querySnapshot.docs) {
-      String status = documentSnapshot.get("status"); // active or trailing
+      String status = documentSnapshot.get("status"); // active or trialing
 
-      if(status == "active" || status == "trailing") {
+      if(status == "active" || status == "trialing") {
         DocumentReference priceDocRef = documentSnapshot.get("price");
         String currentPriceId = "";
 

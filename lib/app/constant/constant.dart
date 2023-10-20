@@ -12,6 +12,7 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 // Url -------------------------------------------------------------------------
 const String successUrl = "https://success.com";
 const String cancelUrl = "https://cancel.com";
+const String stripePortalUrl = "https://europe-west6-shoesstore-d6003.cloudfunctions.net/ext-firestore-stripe-payments-bzjk-createPortalLink";
 
 // String ----------------------------------------------------------------------
 const String success = "Success";

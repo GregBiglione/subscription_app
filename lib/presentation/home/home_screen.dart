@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:subscription_app/domain/model/stripe_data.dart';
+import 'package:subscription_app/domain/model/subscription_status.dart';
 import 'package:subscription_app/domain/model/user_authentication.dart';
 import 'package:subscription_app/presentation/ressource/color_manager.dart';
 import 'package:subscription_app/presentation/ressource/size_manager.dart';
@@ -25,6 +27,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late StripeData stripeData;
+  late SubscriptionStatus subscriptionStatus;
   bool isLoadingPayment = false;
   String? error = "";
 
@@ -45,54 +48,80 @@ class _HomeScreenState extends State<HomeScreen> {
               if(snapshot.hasData) {
                 stripeData = snapshot.data!;
 
-                return Scaffold(
-                  backgroundColor: ColorManager.white100,
-                  appBar: AppBar(
-                    backgroundColor: ColorManager.white100,
-                    title: Text(
-                      StringManager.helloMessage + userData.username,
-                      style: getMediumStyle18(
-                        color: ColorManager.black,
-                      ),
-                    ),
-                    elevation: 0,
-                    actions: [
-                      IconButton(
-                        onPressed: () {
-                          logout();
-                        },
-                        icon: Icon(
-                          Icons.exit_to_app,
-                          color: ColorManager.black,
+                return StreamBuilder<SubscriptionStatus>(
+                  stream: UserAuthentication(
+                    uid: widget.uid,
+                    stripeData: stripeData,
+                  ).checkSubscriptionActive,
+                  builder: (context, snapshot) {
+                    if(snapshot.hasData) {
+                      subscriptionStatus = snapshot.data!;
+
+                      return Scaffold(
+                        backgroundColor: ColorManager.white100,
+                        appBar: AppBar(
+                          backgroundColor: ColorManager.white100,
+                          title: Text(
+                            StringManager.helloMessage + userData.username,
+                            style: getMediumStyle18(
+                              color: ColorManager.black,
+                            ),
+                          ),
+                          elevation: 0,
+                          actions: [
+                            IconButton(
+                              onPressed: () {
+                                logout();
+                              },
+                              icon: Icon(
+                                Icons.exit_to_app,
+                                color: ColorManager.black,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  body: Container(
-                    alignment: Alignment.center,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: SizeManager.s30,
+                        body: Container(
+                          alignment: Alignment.center,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: SizeManager.s30,
+                                ),
+                                subscriptionStatus.isActiveSubscription
+                                    && subscriptionStatus.activePriceId
+                                    == stripeData.subStarterPriceId
+                                || subscriptionStatus.isActiveSubscription == false
+                                    ? starterPlan()
+                                    : const SizedBox(),
+                                const SizedBox(
+                                  height: SizeManager.s10,
+                                ),
+                                subscriptionStatus.isActiveSubscription
+                                    && subscriptionStatus.activePriceId
+                                    == stripeData.subProPriceId
+                                || subscriptionStatus.isActiveSubscription == false
+                                    ? proPlan()
+                                    : const SizedBox(),
+                                const SizedBox(
+                                  height: SizeManager.s40,
+                                ),
+                              ],
+                            ),
                           ),
-                          starterPlan(),
-                          const SizedBox(
-                            height: SizeManager.s10,
-                          ),
-                          proPlan(),
-                          const SizedBox(
-                            height: SizeManager.s40,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
+                      );
+                    } else if (snapshot.connectionState == ConnectionState.waiting) {
+                      return loading(StringManager.loadingSubscriptionStatus);
+                    } else {
+                      return const SizedBox();
+                    }
+                  }
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return loading(StringManager.loadingStripeData);
               } else {
-                return Container(color: Colors.lightBlue,);//const SizedBox();
+                return const SizedBox();
               }
             }
           );
@@ -198,17 +227,21 @@ class _HomeScreenState extends State<HomeScreen> {
               height: SizeManager.s20,
             ),
             SizedBox(
-              width: SizeManager.s180,
+              //width: SizeManager.s180,
               height: SizeManager.s40,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorManager.white,
                 ),
                 onPressed: () async {
-                  buyStarterPlan();
+                  subscriptionStatus.isActiveSubscription == false
+                      ? buyStarterPlan()
+                      : customerPortal();
                 },
                 child: Text(
-                  StringManager.buttonText,
+                  subscriptionStatus.isActiveSubscription == false
+                      ? StringManager.buttonText
+                      : StringManager.buttonTextSubscriptionActivated,
                   style: getBoldStyle18(
                     color: ColorManager.purple700,
                   ),
@@ -475,5 +508,23 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     },);
+  }
+
+  //----------------------------------------------------------------------------
+  // Manage subscription -------------------------------------------------------
+  //----------------------------------------------------------------------------
+
+  Future<void> customerPortal() async {
+    try {
+      HttpsCallable callable = FirebaseFunctions.instance
+          .httpsCallableFromUrl(stripePortalUrl);
+
+      HttpsCallableResult result = await callable.call({
+        "returnUrl": cancelUrl
+      });
+      logger.i(result.data);
+    } catch (e) {
+      logger.e(e.toString());
+    }
   }
 }
