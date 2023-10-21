@@ -523,6 +523,10 @@ class _HomeScreenState extends State<HomeScreen> {
         "returnUrl": cancelUrl
       });
       logger.i(result.data);
+
+      if (result.data != null) {
+        String url = result.data["url"];
+      }
     } catch (e) {
       logger.e(e.toString());
     }
