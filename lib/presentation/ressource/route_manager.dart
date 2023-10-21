@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:subscription_app/presentation/checkout/checkout_screen.dart';
+import 'package:subscription_app/presentation/customer_portal/customer_portal_screen.dart';
 import 'package:subscription_app/presentation/ressource/string_manager.dart';
 import 'package:subscription_app/presentation/sign_in/sign_in_screen.dart';
 
@@ -15,6 +16,10 @@ class RouteManager {
         String args = routeSettings.arguments as String;
         String url = args;
         return MaterialPageRoute(builder: (_) => CheckoutScreen(url: url));
+      case Routes.customerPortalRoute:
+        String args = routeSettings.arguments as String;
+        String url = args;
+        return MaterialPageRoute(builder: (_) => CustomerPortalScreen(url: url));
       default:
         return undefinedRoute();
     }

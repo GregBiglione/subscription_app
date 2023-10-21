@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:subscription_app/domain/model/stripe_data.dart';
 import 'package:subscription_app/domain/model/subscription_status.dart';
 import 'package:subscription_app/domain/model/user_authentication.dart';
+import 'package:subscription_app/presentation/customer_portal/customer_portal_screen.dart';
 import 'package:subscription_app/presentation/ressource/color_manager.dart';
 import 'package:subscription_app/presentation/ressource/size_manager.dart';
 import 'package:subscription_app/presentation/ressource/string_manager.dart';
 import 'package:subscription_app/presentation/ressource/style_manager.dart';
 
 import '../../app/constant/constant.dart';
+import '../../app/constant/routes.dart';
 import '../../app/function.dart';
 import '../../data/service.dart';
 import '../../domain/model/user_data.dart';
@@ -526,9 +528,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (result.data != null) {
         String url = result.data["url"];
+
+        goToCustomerPortal(url);
       }
     } catch (e) {
       logger.e(e.toString());
     }
+  }
+
+  //----------------------------------------------------------------------------
+  // Go to customer portal
+  //----------------------------------------------------------------------------
+
+  void goToCustomerPortal(String url) {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => CustomerPortalScreen(url: url),),
+    );
   }
 }
