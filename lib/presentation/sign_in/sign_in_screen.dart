@@ -5,6 +5,7 @@ import 'package:subscription_app/presentation/home/home_screen.dart';
 import 'package:subscription_app/presentation/ressource/size_manager.dart';
 import 'package:subscription_app/presentation/ressource/string_manager.dart';
 
+import '../../app/constant/routes.dart';
 import '../ressource/color_manager.dart';
 import '../ressource/style_manager.dart';
 
@@ -100,6 +101,17 @@ class _SignInScreenState extends State<SignInScreen> {
                       StringManager.registerButton,
                       style: getMediumStyle18(
                           color: ColorManager.white,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.loginRoute);
+                    },
+                    child: Text(
+                      StringManager.loginLink,
+                      style: getMediumStyle14(
+                        color: ColorManager.lightBlue,
                       ),
                     ),
                   ),

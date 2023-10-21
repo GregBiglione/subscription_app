@@ -64,6 +64,13 @@ TextStyle getMediumStyle({double fontSize = FontSize.s12, required Color color})
   );
 }
 
+TextStyle getMediumStyle14({double fontSize = FontSize.s14, required Color color}) {
+  return _getTextStyle(
+    fontSize,
+    FontWeightManager.medium,
+    color,
+  );
+}
 
 TextStyle getMediumStyle18({double fontSize = FontSize.s18, required Color color}) {
   return _getTextStyle(

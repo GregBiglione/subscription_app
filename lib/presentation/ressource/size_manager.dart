@@ -6,5 +6,6 @@ class SizeManager {
   static const double s20 = 20.0;
   static const double s30 = 30.0;
   static const double s40 = 40.0;
+  static const double s120 = 120.0;
   static const double s180 = 180.0;
 }

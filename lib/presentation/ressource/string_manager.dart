@@ -11,13 +11,17 @@ class StringManager {
   static const String proFirstCondition = "Unlimited For 1 Year";
   static const String proRenewal = "1 Year Auto Renewal Subscription Plan";
   static const String signInTitle = "Sign In";
+  static const String logInTitle = "Log In";
   static const String name = "Name";
   static const String email = "Email";
   static const String password = "Password";
   static const String registerButton = "Register";
+  static const String loginButton = "Login";
   static const String loadingUserData = "Loading user data...";
   static const String loadingStripeData = "Loading stripe data...";
   static const String loadingSubscriptionStatus = "Checking subscription status...";
   static const String noRouteFound = "No Route found";
   static const String buttonTextSubscriptionActivated = "Manage subscription";
+  static const String loginLink = "Already have an account ? Login";
+  static const String registerLink = "Not a member ? Sign up";
 }

@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:subscription_app/presentation/home/home_screen.dart';
+import 'package:subscription_app/presentation/ressource/route_manager.dart';
 import 'package:subscription_app/presentation/sign_in/sign_in_screen.dart';
 
+import 'app/constant/routes.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -27,6 +28,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const SignInScreen(),
+      onGenerateRoute: RouteManager.getRoute,
+      initialRoute: Routes.registerRoute,
     );
   }
 }

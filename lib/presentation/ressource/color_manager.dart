@@ -5,6 +5,7 @@ class ColorManager {
   static Color white100 = HexColor.fromHex("#F6F2FF");
   static Color black = HexColor.fromHex("#000000");
   static Color white = HexColor.fromHex("#FFFFFF");
+  static Color lightBlue = HexColor.fromHex("#03A9F4");
 }
 
 extension HexColor on Color {

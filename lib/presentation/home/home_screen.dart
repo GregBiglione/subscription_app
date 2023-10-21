@@ -12,7 +12,6 @@ import 'package:subscription_app/presentation/ressource/string_manager.dart';
 import 'package:subscription_app/presentation/ressource/style_manager.dart';
 
 import '../../app/constant/constant.dart';
-import '../../app/constant/routes.dart';
 import '../../app/function.dart';
 import '../../data/service.dart';
 import '../../domain/model/user_data.dart';
