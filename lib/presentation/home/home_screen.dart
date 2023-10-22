@@ -362,10 +362,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor: ColorManager.purple700,
                     ),
                     onPressed: () async {
-                      buyProPlan();
+                      subscriptionStatus.isActiveSubscription == false
+                          ? buyProPlan()
+                          : customerPortal();
                     },
                     child: Text(
-                      StringManager.buttonText,
+                      subscriptionStatus.isActiveSubscription == false
+                          ? StringManager.buttonText
+                          : StringManager.buttonTextSubscriptionActivated,
                       style: getBoldStyle18(
                           color: ColorManager.white,
                       ),

@@ -1,0 +1,88 @@
+{
+  "project_info": {
+    "project_number": "861621052394",
+    "project_id": "shoesstore-d6003",
+    "storage_bucket": "shoesstore-d6003.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861621052394:android:b9f39bdc4329c15b900893",
+        "android_client_info": {
+          "package_name": "com.example.shoes_store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "861621052394-h80plts73ie82b3sui2uk9613vcuuatt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": ""
+        },
+        {
+          "current_key": ""
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "861621052394-h80plts73ie82b3sui2uk9613vcuuatt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "861621052394-8f6p6p0kkn2o3mjrfhhr4u1k1bmug05s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shoesStore"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861621052394:android:56e76d4ddc4f5530900893",
+        "android_client_info": {
+          "package_name": "com.example.subscription_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "861621052394-h80plts73ie82b3sui2uk9613vcuuatt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": ""
+        },
+        {
+          "current_key": ""
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "861621052394-h80plts73ie82b3sui2uk9613vcuuatt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "861621052394-8f6p6p0kkn2o3mjrfhhr4u1k1bmug05s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shoesStore"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
