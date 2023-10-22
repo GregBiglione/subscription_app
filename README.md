@@ -1,10 +1,10 @@
-<b>SubscriptionApp</b> is a Flutter application with a clean architecture</br>
+<b>SubscriptionApp</b> is a Flutter application with a clean architecture using Firebase & Stripe</br>
 
 <h2>Application features</h2></br>
 <ul>
   <li>Login, register with an email on Firebase & logout</li>
   <li>Buy a monthly or yearly subscription with Stripe</li>
-  <li>Mange subscription to calcel it</li>
+  <li>Manage subscription to cancel it</li>
 </ul>
 
 <h2>Application demo</h2></br>
